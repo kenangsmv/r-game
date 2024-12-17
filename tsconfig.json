@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "components/BetType.jsx", "components/BetType.jsx", "components/BetAmount.jsx"  ]
+, "components/BetType.jsx", "components/BetType.jsx", "components/BetAmount.tsx"  ]
 }

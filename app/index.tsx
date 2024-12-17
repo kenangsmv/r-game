@@ -25,8 +25,12 @@ import Roulette from "@/components/Roulette";
 import Bets from "@/components/Bets";
 import BetType from "@/components/BetType";
 import BetAmount from "@/components/BetAmount";
+import Multiplayer from "@/components/Multiplayer";
+import { useState } from "react";
+import { Colors } from "@/constants/Colors";
 
 export default function HomeScreen() {
+  const [betAmount, setBetAmount] = useState(0);
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.header}>
@@ -74,8 +78,20 @@ export default function HomeScreen() {
       <Bets />
       <View style={styles.placingBetContainer}>
         <BetType />
-       <BetAmount betAmount={0} balance={10329}/>
+        <BetAmount
+          onBetAmountChange={(newAmount: any) => {
+            setBetAmount(newAmount);
+          }}
+          betAmount={0}
+          balance={10329}
+        />
+        <Multiplayer />
       </View>
+      <SafeAreaView >
+        <Pressable style={styles.placeBetButton}>
+          <ThemedText style={styles.placeBetButtonText}>Place a bet</ThemedText>
+        </Pressable>
+      </SafeAreaView>
     </ThemedView>
   );
 }
@@ -83,7 +99,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10
+    padding: 10,
   },
   header: {
     display: "flex",
@@ -145,9 +161,23 @@ const styles = StyleSheet.create({
   },
 
   placingBetContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
     backgroundColor: "#131243",
     paddingHorizontal: 15,
     paddingVertical: 10,
-    borderRadius: 20
+    borderRadius: 20,
+  },
+  placeBetButton: {
+    backgroundColor: Colors.dark.primary,
+    padding: 15,
+    borderRadius: 30,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  placeBetButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
