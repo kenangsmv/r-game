@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "components/BetType.jsx", "components/BetType.jsx", "components/BetAmount.tsx"  ]
+, "components/BetType.jsx", "components/BetType.jsx", "components/BetAmount.tsx", "components/ThemedText.jsx", "components/ThemedView.jsx", "constants/constants.d.js", "constants/Colors.js", "hooks/useThemeColor.js", "hooks/useColorScheme.web.js", "hooks/useColorScheme.js"  ]
 }

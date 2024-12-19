@@ -69,14 +69,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     borderWidth: 1,
     borderStyle: "solid",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 10,
+    elevation: 10,
   },
   min: {
-    backgroundColor: "#FDA701",
+    backgroundColor: "#FFB700",
     borderColor: "#FFCC02",
+    shadowColor: "#FFCC02",
+
   },
   max: {
-    backgroundColor: "#05D903",
+    backgroundColor: "#00FF00",
     borderColor: "#02F100",
+    shadowColor: "#02F100",
   },
   input: {
     borderRadius: 10,

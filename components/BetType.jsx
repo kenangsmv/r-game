@@ -75,10 +75,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   activeButton: {
-    backgroundColor: "#BC09F9",
+    backgroundColor: "#D91FFF",
     borderWidth:1,
     borderStyle: "solid",
-    borderColor:"#D617FD"
+    borderColor:"#D617FD",
+    shadowColor: "#D617FD",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 10,
   },
   inactiveButton: {
     backgroundColor: "transparent",
