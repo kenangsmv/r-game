@@ -1,10 +1,12 @@
 import { Dimensions, Pressable, StyleSheet, View } from "react-native";
 import React from "react";
-import { ThemedView } from "./ThemedView";
-import { ThemedText } from "./ThemedText";
+
+
 import Rocket from "@/assets/icons/rocket.svg";
 import Bomb from "@/assets/icons/bomb.svg";
 import Crown from "@/assets/icons/crown.svg";
+import ThemedView from "./ThemedView";
+import ThemedText from "./ThemedText";
 
 
 const { width } = Dimensions.get("window"); // Get device screen width
@@ -33,7 +35,7 @@ const Bets = () => {
     },
   ];
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       {bets.map((bet, index) => (
     <Pressable key={index+bet.value} style={[
           styles.betButtonContainer,
@@ -46,7 +48,7 @@ const Bets = () => {
         </Pressable>
     
       ))}
-    </ThemedView>
+    </View>
   );
 };
 

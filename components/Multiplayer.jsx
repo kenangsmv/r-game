@@ -1,6 +1,7 @@
 import { View, TextInput, StyleSheet } from "react-native";
 import React, { useState } from "react";
-import { ThemedText } from "./ThemedText";
+import ThemedText from "./ThemedText";
+
 
 const Multiplayer = () => {
   const [minInputAmount, setMinInputAmount] = useState(0);

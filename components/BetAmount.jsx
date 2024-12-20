@@ -6,16 +6,17 @@ import {
   TextInput,
   Pressable,
   useColorScheme,
+  Modal,
+  TouchableWithoutFeedback
 } from "react-native";
 import React, { useState } from "react";
-import { ThemedText } from "./ThemedText";
-import { Modal, Portal, Text, Button } from "react-native-paper";
-import { Picker } from "@react-native-picker/picker";
+
 import { MaterialIcons } from "@expo/vector-icons";
 import usdtIcon from "@/assets/images/cryptos/usdt.png";
 import btcIcon from "@/assets/images/cryptos/btc.png";
 import ethIcon from "@/assets/images/cryptos/eth.png";
 import { Colors } from "@/constants/Colors";
+import ThemedText from "./ThemedText";
 
 const BetAmount = ({ betAmount, balance, onBetAmountChange }) => {
   const theme = useColorScheme() ?? 'light';
@@ -93,33 +94,37 @@ const BetAmount = ({ betAmount, balance, onBetAmountChange }) => {
         />
       </View>
 
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={hideModal}
-          contentContainerStyle={styles.modalContainer}
-        >
-          <Picker
-            selectedValue={selectedCurrency}
-            onValueChange={(value) => {
-              const selectedCurrency = currencies.find(
-                (currency) => currency.value === value
-              );
-              setSelectedCurrency(selectedCurrency);
-              hideModal();
-            }}
-            style={styles.picker}
-          >
-            {currencies.map((currency, index) => (
-              <Picker.Item
-                key={index}
-                label={currency.label}
-                value={currency.value}
-              />
-            ))}
-          </Picker>
-        </Modal>
-      </Portal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={visible}
+        onRequestClose={hideModal}
+      >
+        <TouchableWithoutFeedback onPress={hideModal}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback>
+              <View style={styles.modalContent}>
+                <ThemedText style={styles.modalTitle}>Select Currency</ThemedText>
+                {currencies.map((currency, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.currencyOption}
+                    onPress={() => {
+                      setSelectedCurrency(currency);
+                      hideModal();
+                    }}
+                  >
+                    <Image source={currency.icon} style={styles.currencyIcon} />
+                    <ThemedText style={styles.currencyOptionText}>
+                      {currency.label}
+                    </ThemedText>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
       <View style={styles.amountPortionContainer}>
         {amoutPortion.map((item, index) => (
           <Pressable
@@ -223,6 +228,42 @@ const styles = StyleSheet.create({
   portionText: {
     fontSize: 14,
     fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#202054',
+    borderRadius: 12,
+    padding: 20,
+    width: '80%',
+    maxWidth: 300,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  currencyOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 4,
+    backgroundColor: '#2A2968',
+  },
+  currencyIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
+  },
+  currencyOptionText: {
+    fontSize: 16,
+    fontWeight: '500',
   },
 });
 

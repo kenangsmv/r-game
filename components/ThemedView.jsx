@@ -7,8 +7,10 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 //   darkColor?: string;
 // };
 
-export function ThemedView({ style, lightColor, darkColor, ...otherProps }) {
+const ThemedView = ({ style, lightColor, darkColor, ...otherProps }) => {
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <View style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+
+export default ThemedView;

@@ -4,10 +4,11 @@ import {
   SafeAreaView,
   Text,
   Pressable,
+  Platform,
 } from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+
+
 import { Link } from "expo-router";
 
 import {
@@ -21,52 +22,30 @@ import Bets from "@/components/Bets";
 import BetType from "@/components/BetType";
 import BetAmount from "@/components/BetAmount";
 import Multiplayer from "@/components/Multiplayer";
-import { useState } from "react";
-import { Colors } from "@/constants/Colors";
 
-export default function HomeScreen() {
+import { Colors } from "@/constants/Colors";
+import { useState } from "react";
+import ThemedView from "../components/ThemedView";
+import ThemedText from "../components/ThemedText";
+import GlassButton from "../components/GlassButton";
+
+
+const HomeScreen = () => {
   const [betAmount, setBetAmount] = useState(0);
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} lightColor={Colors.dark.background} darkColor={Colors.dark.background}>
       <SafeAreaView style={styles.header}>
-        <ThemedView style={styles.logoContainer}>
+        <View style={styles.logoContainer}>
           <View style={styles.logo}>
             <Text style={styles.logoText}>SR</Text>
           </View>
-          <ThemedText style={styles.title} type="title">
+          <ThemedText style={styles.title} type="title" lightColor={Colors.dark.text} darkColor={Colors.dark.text}>
              Space Roulette
           </ThemedText>
-        </ThemedView>
+        </View>
 
         <Link href="/signup">
-          <Pressable
-            style={styles.buttonContainer}
-            onPress={() => console.log("Pressed")}
-          >
-            <View style={styles.canvasContainer}>
-              <Canvas style={styles.canvas}>
-                <RoundedRect
-                  x={0}
-                  y={0}
-                  width={102}
-                  height={32}
-                  r={26}
-                  color="#7F8CA1"
-                />
-
-                <RoundedRect x={2} y={2} width={98} height={28} r={24}>
-                  <LinearGradient
-                    start={vec(99, 0)} // Top-center
-                    end={vec(99, 48)}
-                    colors={["#5C7293", "#384371"]}
-                  />
-                </RoundedRect>
-              </Canvas>
-              <View style={styles.textContainer}>
-                <ThemedText style={styles.buttonText}>Sign up</ThemedText>
-              </View>
-            </View>
-          </Pressable>
+        <GlassButton title="Sign up" onPress={() => console.log("Pressed")} />
         </Link>
       </SafeAreaView>
       <Roulette />
@@ -187,3 +166,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+export default HomeScreen;

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
-import { ThemedText } from './ThemedText';
+import ThemedText from './ThemedText';
+
 
 const Roulette = () => {
   return (
