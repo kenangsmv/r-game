@@ -1,57 +1,58 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
-import "react-native-reanimated";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Drawer } from 'expo-router/drawer';
+import { useEffect } from 'react';
+import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Colors } from '@/constants/Colors';
 
-import { useColorScheme } from "@/hooks/useColorScheme";
-
-import { Provider as PaperProvider } from "react-native-paper";
-import { MD3DarkTheme } from 'react-native-paper';
-
-// Create a custom theme
-const darkTheme = {
-  ...MD3DarkTheme,
-  colors: {
-    ...MD3DarkTheme.colors,
-    backdrop: 'rgba(0, 0, 0, 0.5)',
-  },
+const DrawerLayout = () => {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer
+        screenOptions={{
+          headerShown: false,
+          drawerStyle: {
+            backgroundColor: Colors.dark.background,
+            width: 250,
+          },
+          drawerLabelStyle: {
+            color: Colors.dark.text,
+          },
+        }}
+      >
+        <Drawer.Screen
+          name="index"
+          options={{
+            drawerLabel: 'Home',
+            title: 'Home',
+          }}
+        />
+        <Drawer.Screen
+          name="profile"
+          options={{
+            drawerLabel: 'Profile',
+            title: 'Profile',
+          }}
+        />
+        <Drawer.Screen
+          name="deposit"
+          options={{
+            drawerLabel: 'Deposit',
+            title: 'Deposit',
+            drawerItemStyle: { display: 'none' },
+          }}
+        />
+        <Drawer.Screen
+          name="withdraw"
+          options={{
+            drawerLabel: 'Withdraw',
+            title: 'Withdraw',
+            drawerItemStyle: { display: 'none' },
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView>
+  );
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return (
-    <PaperProvider theme={darkTheme}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </PaperProvider>
-  );
-}
+export default DrawerLayout;

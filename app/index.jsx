@@ -6,22 +6,17 @@ import {
   Pressable,
   Platform,
 } from "react-native";
-
-
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from 'expo-router';
 
 import { Link } from "expo-router";
 
-import {
-  Canvas,
-  LinearGradient,
-  RoundedRect,
-  vec,
-} from "@shopify/react-native-skia";
 import Roulette from "@/components/Roulette";
 import Bets from "@/components/Bets";
 import BetType from "@/components/BetType";
 import BetAmount from "@/components/BetAmount";
 import Multiplayer from "@/components/Multiplayer";
+import MainButton from "@/components/MainButton";
 
 import { Colors } from "@/constants/Colors";
 import { useState } from "react";
@@ -29,9 +24,10 @@ import ThemedView from "../components/ThemedView";
 import ThemedText from "../components/ThemedText";
 import GlassButton from "../components/GlassButton";
 
-
 const HomeScreen = () => {
   const [betAmount, setBetAmount] = useState(0);
+  const navigation = useNavigation();
+
   return (
     <ThemedView style={styles.container} lightColor={Colors.dark.background} darkColor={Colors.dark.background}>
       <SafeAreaView style={styles.header}>
@@ -44,9 +40,12 @@ const HomeScreen = () => {
           </ThemedText>
         </View>
 
-        <Link href="/signup">
-        <GlassButton title="Sign up" onPress={() => console.log("Pressed")} />
-        </Link>
+        <Pressable 
+          style={styles.menuButton}
+          onPress={() => navigation.openDrawer()}
+        >
+          <Ionicons name="menu" size={32} color={Colors.dark.text} />
+        </Pressable>
       </SafeAreaView>
       <Roulette />
       <Bets />
@@ -61,10 +60,11 @@ const HomeScreen = () => {
         />
         <Multiplayer />
       </View>
-      <SafeAreaView >
-        <Pressable style={styles.placeBetButton}>
-          <ThemedText style={styles.placeBetButtonText}>Place a bet</ThemedText>
-        </Pressable>
+      <SafeAreaView style={styles.buttonContainer}>
+        <MainButton 
+          title="Place a bet"
+          onPress={() => console.log("Place bet pressed")}
+        />
       </SafeAreaView>
     </ThemedView>
   );
@@ -80,15 +80,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 400,
-    // backgroundColor: "red"
+    paddingVertical: 40,
   },
   logoContainer: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    // backgroundColor:"blue"
   },
   logo: {
     width: 50,
@@ -112,7 +110,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "bold",
-    // backgroundColor: "yellow"
   },
   buttonContainer: {
     borderRadius: 26,
@@ -149,21 +146,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
   },
-  placeBetButton: {
-    backgroundColor: Colors.dark.primary,
-    padding: 15,
-    borderRadius: 30,
-    alignItems: "center",
+  buttonContainer: {
     marginTop: 10,
-    shadowColor: "#D617FD",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
-    elevation: 10,
   },
-  placeBetButtonText: {
-    color: "white",
-    fontWeight: "bold",
+  menuButton: {
+    padding: 8,
+    borderRadius: 8,
   },
 });
 export default HomeScreen;

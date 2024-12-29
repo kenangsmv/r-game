@@ -2,39 +2,26 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Image,
   TextInput,
   Pressable,
   useColorScheme,
-  Modal,
-  TouchableWithoutFeedback
 } from "react-native";
 import React, { useState } from "react";
-
-import { MaterialIcons } from "@expo/vector-icons";
-import usdtIcon from "@/assets/images/cryptos/usdt.png";
-import btcIcon from "@/assets/images/cryptos/btc.png";
-import ethIcon from "@/assets/images/cryptos/eth.png";
 import { Colors } from "@/constants/Colors";
 import ThemedText from "./ThemedText";
+import SelectInput from "./SelectInput";
+import { CRYPTOCURRENCIES } from "@/constants/Cryptocurrencies";
 
 const BetAmount = ({ betAmount, balance, onBetAmountChange }) => {
   const theme = useColorScheme() ?? 'light';
-
-  const [selectedValue, setSelectedValue] = useState("");
   const [inputAmount, setInputAmount] = useState(
     betAmount === 0 ? "" : betAmount.toString()
   );
+  const [selectedCurrency, setSelectedCurrency] = useState(CRYPTOCURRENCIES[0]);
 
   const formatNumber = (num) => {
     return num.toLocaleString();
   };
-
-  const currencies = [
-    { label: "USDT", value: "usdt", icon: usdtIcon },
-    { label: "BTC", value: "btc", icon: btcIcon },
-    { label: "ETH", value: "eth", icon: ethIcon },
-  ];
 
   const amoutPortion = [
     { label: "1/2", value: 0.5 },
@@ -42,11 +29,6 @@ const BetAmount = ({ betAmount, balance, onBetAmountChange }) => {
     { label: "1/4", value: 0.25 },
     { label: "Full", value: 1 },
   ];
-  const [visible, setVisible] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState(currencies[0]);
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
 
   const handleAmountChange = (text) => {
     const cleanedText = text?.replace(/[^0-9.]/g, "");
@@ -66,24 +48,23 @@ const BetAmount = ({ betAmount, balance, onBetAmountChange }) => {
         <View style={styles.textContainer}>
           <ThemedText style={styles.title}>Bet Amount:</ThemedText>
           <ThemedText style={styles.text}>
-            {formatNumber(betAmount)} USDT
+            {formatNumber(betAmount)} {selectedCurrency.label}
           </ThemedText>
         </View>
         <View style={styles.textContainer}>
           <ThemedText style={styles.title}>Balance:</ThemedText>
           <ThemedText style={styles.text}>
-            {formatNumber(balance)} USDT
+            {formatNumber(balance)} {selectedCurrency.label}
           </ThemedText>
         </View>
       </View>
       <View style={styles.inputContainer}>
-        <TouchableOpacity onPress={showModal} style={styles.selectBox}>
-          <Image source={selectedCurrency.icon} style={styles.icon} />
-          <ThemedText style={styles.currencyText}>
-            {selectedCurrency.label}
-          </ThemedText>
-          <MaterialIcons name="keyboard-arrow-down" size={24} color="#9C9C9C" />
-        </TouchableOpacity>
+        <SelectInput
+          options={CRYPTOCURRENCIES}
+          value={selectedCurrency}
+          onChange={setSelectedCurrency}
+          modalTitle="Select Currency"
+        />
         <TextInput
           style={[styles.input, styles.placeholderStyle]}
           value={inputAmount}
@@ -93,38 +74,6 @@ const BetAmount = ({ betAmount, balance, onBetAmountChange }) => {
           placeholderTextColor="#9C9C9C"
         />
       </View>
-
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={visible}
-        onRequestClose={hideModal}
-      >
-        <TouchableWithoutFeedback onPress={hideModal}>
-          <View style={styles.modalOverlay}>
-            <TouchableWithoutFeedback>
-              <View style={styles.modalContent}>
-                <ThemedText style={styles.modalTitle}>Select Currency</ThemedText>
-                {currencies.map((currency, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.currencyOption}
-                    onPress={() => {
-                      setSelectedCurrency(currency);
-                      hideModal();
-                    }}
-                  >
-                    <Image source={currency.icon} style={styles.currencyIcon} />
-                    <ThemedText style={styles.currencyOptionText}>
-                      {currency.label}
-                    </ThemedText>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
       <View style={styles.amountPortionContainer}>
         {amoutPortion.map((item, index) => (
           <Pressable
@@ -169,46 +118,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  cryptoSelector: {
-    backgroundColor: "#202054",
-    borderRadius: 12,
-
-  },
-  currencyText: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
   inputContainer: {
     flexDirection: "row",
     backgroundColor: "#202054",
     borderRadius: 12,
     padding: 6,
     alignItems: "center",
+    gap: 10,
   },
   input: {
     flex: 1,
     color: "white",
     fontSize: 20,
     paddingHorizontal: 10,
-
   },
   placeholderStyle: {
     fontSize: 16, 
     fontFamily: "System", 
     fontWeight: "400", 
-  },
-  selectBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    borderRightWidth: 1,
-    borderRightColor: "#384371",
-    paddingRight: 10,
   },
   amountPortionContainer: {
     display: "flex",
@@ -224,46 +151,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
   portionText: {
     fontSize: 14,
     fontWeight: "bold",
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: '#202054',
-    borderRadius: 12,
-    padding: 20,
-    width: '80%',
-    maxWidth: 300,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  currencyOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 8,
-    marginVertical: 4,
-    backgroundColor: '#2A2968',
-  },
-  currencyIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 12,
-  },
-  currencyOptionText: {
-    fontSize: 16,
-    fontWeight: '500',
   },
 });
 
